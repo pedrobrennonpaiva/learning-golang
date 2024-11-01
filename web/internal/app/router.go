@@ -1,7 +1,7 @@
 package app
 
 import (
-	"webapp/internal/app/router/routes"
+	"webapp/internal/app/routes"
 
 	"github.com/gorilla/mux"
 )
