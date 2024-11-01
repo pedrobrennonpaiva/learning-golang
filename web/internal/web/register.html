@@ -1,0 +1,40 @@
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/assets/css/login.css">
+    <title>Golang Webapp - Register</title>
+</head>
+<body>
+    <div class="container-login">
+        <div>
+            <form class="golang-form" id="register-form">
+                <span>Register your account on Golang Webapp</span>
+                <div>
+                    <input type="text" name="name" id="name" placeholder="Enter your name" required>
+                </div>
+                <div>
+                    <input type="text" name="nickname" id="nickname" placeholder="Enter your nickname" required>
+                </div>
+                <div>
+                    <input type="email" name="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div>
+                    <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <div>
+                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <div>
+                    <button type="submit" class="btn-golang">Register</button>
+                </div>
+                <div>
+                    <span>Already have an account? <a href="/login">Login</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/assets/js/jquery-3.7.1.js"></script>
+    <script src="/assets/js/register.js"></script>
+</body>
+</html>
