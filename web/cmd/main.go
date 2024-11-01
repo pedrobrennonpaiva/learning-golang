@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"webapp/internal/router"
+	"webapp/internal/app"
+	"webapp/internal/pkg"
 )
 
 func main() {
-	fmt.Println("Running webapp on port 3000")
+	pkg.LoadTemplates()
 
-	router := router.Generate()
+	fmt.Println("Running webapp on port 3000")
+	router := app.Generate()
 	log.Fatal(http.ListenAndServe(":3000", router))
 }
