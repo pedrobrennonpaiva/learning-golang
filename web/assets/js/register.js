@@ -22,9 +22,11 @@ function register(e) {
             nickname,
             email,
             password
-        },
-        success: function(response) {
-            console.log(response);
         }
-    })
+    }).done(function() {
+        alert('User registered successfully');
+    }).fail(function(error) {
+        console.log(error);
+        alert('Error registering user');
+    });
 }
