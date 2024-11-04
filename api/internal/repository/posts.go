@@ -60,13 +60,11 @@ func (p Posts) GetPostById(postId uint64) (models.Post, error) {
 
 func (p Posts) GetPosts(user uint64) ([]models.Post, error) {
 	rows, err := p.db.Query(`
-		SELECT distinct p.*, u.nickname, count(l.id) as likes 
+		SELECT distinct p.*, u.nickname, (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likes
 		FROM posts p 
 		INNER JOIN users u ON u.id = p.author_id 
 		INNER JOIN followers f ON f.user_id = p.author_id 
-		LEFT JOIN likes l on l.post_id = p.id 
 		WHERE u.id = ? or f.follower_id = ?
-		GROUP BY p.id
 		ORDER BY 1 DESC
 	`, user, user)
 	if err != nil {

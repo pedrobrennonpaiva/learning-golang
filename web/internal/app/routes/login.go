@@ -7,12 +7,6 @@ import (
 
 var loginRoutes = []Route{
 	{
-		Uri:     "/",
-		Method:  http.MethodGet,
-		Handler: controllers.LoadLoginPage,
-		Auth:    false,
-	},
-	{
 		Uri:     "/login",
 		Method:  http.MethodGet,
 		Handler: controllers.LoadLoginPage,
@@ -23,5 +17,11 @@ var loginRoutes = []Route{
 		Method:  http.MethodPost,
 		Handler: controllers.LoginPost,
 		Auth:    false,
+	},
+	{
+		Uri:     "/logout",
+		Method:  http.MethodPost,
+		Handler: controllers.Logout,
+		Auth:    true,
 	},
 }

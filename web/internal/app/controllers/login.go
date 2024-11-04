@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"net/http"
 	"webapp/internal/config"
-	"webapp/internal/models/responses"
+	"webapp/internal/models"
 	"webapp/internal/pkg"
 	"webapp/internal/pkg/cookies"
+	"webapp/internal/pkg/responses"
 )
 
 func LoadLoginPage(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +45,7 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var authResponse responses.AuthResponse
+	var authResponse models.AuthResponse
 	if err = json.NewDecoder(response.Body).Decode(&authResponse); err != nil {
 		responses.JSON(w, http.StatusUnprocessableEntity, responses.ErrorAPI{Err: err.Error()})
 		return
@@ -56,4 +57,9 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responses.JSON(w, response.StatusCode, authResponse)
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	// cookies.Delete(w)
+	http.Redirect(w, r, "/login", 302)
 }

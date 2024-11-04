@@ -1,4 +1,4 @@
-package responses
+package models
 
 type AuthResponse struct {
 	ID        string `json:"id"`
