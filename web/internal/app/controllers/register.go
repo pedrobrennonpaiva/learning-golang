@@ -32,7 +32,8 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response, err := http.Post(fmt.Sprintf("%s/users", config.GetConfig().ApiUrl), "application/json", bytes.NewBuffer(user))
+	url := fmt.Sprintf("%s/users", config.GetConfig().ApiUrl)
+	response, err := http.Post(url, "application/json", bytes.NewBuffer(user))
 	if err != nil {
 		responses.JSON(w, http.StatusInternalServerError, responses.ErrorAPI{Err: err.Error()})
 		return

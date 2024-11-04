@@ -7,10 +7,12 @@ import (
 	"webapp/internal/app"
 	"webapp/internal/config"
 	"webapp/internal/pkg"
+	"webapp/internal/pkg/cookies"
 )
 
 func main() {
 	config := config.Parse()
+	cookies.Configure()
 
 	pkg.LoadTemplates()
 	router := app.Generate()
