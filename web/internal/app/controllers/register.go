@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"webapp/internal/config"
-	"webapp/internal/models/responses"
 	"webapp/internal/pkg"
+	"webapp/internal/pkg/responses"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {

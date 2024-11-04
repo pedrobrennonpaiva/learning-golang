@@ -9,6 +9,7 @@ var templates *template.Template
 
 func LoadTemplates() {
 	templates = template.Must(template.ParseGlob("internal/web/*html"))
+	templates = template.Must(templates.ParseGlob("internal/web/templates/*html"))
 }
 
 func ExecuteTemplate(w http.ResponseWriter, template string, data interface{}) {

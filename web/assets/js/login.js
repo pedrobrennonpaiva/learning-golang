@@ -14,7 +14,7 @@ function login(e) {
             password
         }
     }).done(function() {
-        window.location = '/home';
+        window.location = '/';
     }).fail(function(error) {
         console.log(error);
         alert('Error logging in');
