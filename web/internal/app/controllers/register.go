@@ -3,9 +3,8 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
+	"webapp/internal/models/responses"
 	"webapp/internal/pkg"
 )
 
@@ -16,7 +15,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		log.Fatal(err)
+		responses.JSON(w, http.StatusBadRequest, responses.ErrorAPI{Err: err.Error()})
+		return
 	}
 
 	user, err := json.Marshal(map[string]string{
@@ -26,15 +26,21 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		"password": r.FormValue("password"),
 	})
 	if err != nil {
-		log.Fatal(err)
+		responses.JSON(w, http.StatusBadRequest, responses.ErrorAPI{Err: err.Error()})
+		return
 	}
 
 	response, err := http.Post("http://localhost:5500/users", "application/json", bytes.NewBuffer(user))
 	if err != nil {
-		log.Fatal(err)
+		responses.JSON(w, http.StatusInternalServerError, responses.ErrorAPI{Err: err.Error()})
+		return
 	}
 	defer response.Body.Close()
 
-	fmt.Println(response.Body)
-	w.Write([]byte("register post"))
+	if response.StatusCode >= 400 {
+		responses.TreatError(w, response)
+		return
+	}
+
+	responses.JSON(w, response.StatusCode, nil)
 }
