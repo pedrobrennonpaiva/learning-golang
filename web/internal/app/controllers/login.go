@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"webapp/internal/config"
 	"webapp/internal/models/responses"
 	"webapp/internal/pkg"
+	"webapp/internal/pkg/cookies"
 )
 
 func LoadLoginPage(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +31,8 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response, err := http.Post(fmt.Sprintf("%s/login", config.GetConfig().ApiUrl), "application/json", bytes.NewBuffer(user))
+	url := fmt.Sprintf("%s/login", config.GetConfig().ApiUrl)
+	response, err := http.Post(url, "application/json", bytes.NewBuffer(user))
 	if err != nil {
 		responses.JSON(w, http.StatusInternalServerError, responses.ErrorAPI{Err: err.Error()})
 		return
@@ -43,7 +44,16 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, _ := io.ReadAll(response.Body)
+	var authResponse responses.AuthResponse
+	if err = json.NewDecoder(response.Body).Decode(&authResponse); err != nil {
+		responses.JSON(w, http.StatusUnprocessableEntity, responses.ErrorAPI{Err: err.Error()})
+		return
+	}
 
-	responses.JSON(w, response.StatusCode, string(token))
+	if err = cookies.Save(w, authResponse); err != nil {
+		responses.JSON(w, http.StatusInternalServerError, responses.ErrorAPI{Err: err.Error()})
+		return
+	}
+
+	responses.JSON(w, response.StatusCode, authResponse)
 }

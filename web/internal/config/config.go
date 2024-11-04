@@ -6,8 +6,10 @@ import (
 )
 
 type config struct {
-	ApiUrl string `env:"API_URL"`
-	Port   string `env:"PORT"`
+	ApiUrl   string `env:"API_URL"`
+	Port     string `env:"PORT"`
+	HashKey  string `env:"HASH_KEY"`
+	BlockKey string `env:"BLOCK_KEY"`
 }
 
 var cfg *config
