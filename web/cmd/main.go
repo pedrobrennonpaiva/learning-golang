@@ -5,13 +5,19 @@ import (
 	"log"
 	"net/http"
 	"webapp/internal/app"
+	"webapp/internal/config"
 	"webapp/internal/pkg"
 )
 
 func main() {
-	pkg.LoadTemplates()
+	config := config.Parse()
 
-	fmt.Println("Running webapp on port 3000")
+	pkg.LoadTemplates()
 	router := app.Generate()
-	log.Fatal(http.ListenAndServe(":3000", router))
+
+	fmt.Printf("Server is running on port: %s\n", config.Port)
+	err := http.ListenAndServe(fmt.Sprintf(":%s", config.Port), router)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
