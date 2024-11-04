@@ -4,14 +4,16 @@ import (
 	"errors"
 	"fmt"
 	"golang-api/internal/config"
+	"golang-api/internal/models/responses"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-func CreateToken(userId uint64) (string, error) {
+func CreateToken(userId uint64) (responses.AuthResponse, error) {
 
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
@@ -19,7 +21,12 @@ func CreateToken(userId uint64) (string, error) {
 	claims["userId"] = userId
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(config.GetConfig().SecretKey))
+	tokenString, err := token.SignedString([]byte(config.GetConfig().SecretKey))
+	if err != nil {
+		return responses.AuthResponse{}, err
+	}
+
+	return responses.AuthResponse{ID: strconv.FormatUint(userId, 10), Token: tokenString, ExpiresAt: claims["exp"].(int64)}, nil
 }
 
 func ValidateToken(r *http.Request) error {
