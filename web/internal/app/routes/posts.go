@@ -24,4 +24,22 @@ var postsRoutes = []Route{
 		Handler: controllers.UnlikePost,
 		Auth:    true,
 	},
+	{
+		Uri:     "/posts/{id}/update",
+		Method:  http.MethodGet,
+		Handler: controllers.LoadPostUpdate,
+		Auth:    true,
+	},
+	{
+		Uri:     "/posts/{id}",
+		Method:  http.MethodPut,
+		Handler: controllers.UpdatePost,
+		Auth:    true,
+	},
+	{
+		Uri:     "/posts/{id}",
+		Method:  http.MethodDelete,
+		Handler: controllers.DeletePost,
+		Auth:    true,
+	},
 }
