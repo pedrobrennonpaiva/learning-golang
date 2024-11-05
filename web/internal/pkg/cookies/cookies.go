@@ -2,6 +2,7 @@ package cookies
 
 import (
 	"net/http"
+	"time"
 	"webapp/internal/config"
 	"webapp/internal/models"
 
@@ -42,4 +43,14 @@ func Read(r *http.Request) (models.AuthResponse, error) {
 	}
 
 	return auth, nil
+}
+
+func Delete(w http.ResponseWriter) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "authData",
+		Value:    "",
+		Path:     "/",
+		HttpOnly: true,
+		Expires:  time.Unix(0, 0),
+	})
 }

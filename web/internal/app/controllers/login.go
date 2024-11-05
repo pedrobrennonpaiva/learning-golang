@@ -60,6 +60,6 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	// cookies.Delete(w)
+	cookies.Delete(w)
 	http.Redirect(w, r, "/login", 302)
 }

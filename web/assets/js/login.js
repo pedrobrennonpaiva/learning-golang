@@ -17,6 +17,6 @@ function login(e) {
         window.location = '/';
     }).fail(function(error) {
         console.log(error);
-        alert('Error logging in');
+        Swal.fire("Ops...", "User or password invalid!", "error");
     });
 }
