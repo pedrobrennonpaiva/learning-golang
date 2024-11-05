@@ -1,6 +1,10 @@
 $('#new-post-form').on('submit', createPost);
+
 $(document).on('click', '.like-post', likePost);
 $(document).on('click', '.unlike-post', unlikePost);
+
+$('#update-post').on('click', updatePost);
+$('.delete-post').on('click', deletePost);
 
 function createPost(event) {
     event.preventDefault();
@@ -75,4 +79,60 @@ function unlikePost(event) {
     }).always(function() {
         elementClicked.prop('disabled', false);
     });
+}
+
+
+function updatePost() {
+    $(this).prop('disabled', true);
+
+    const postId = $(this).data('post-id');
+    
+    $.ajax({
+        url: `/posts/${postId}`,
+        method: "PUT",
+        data: {
+            title: $('#title').val(),
+            content: $('#content').val()
+        }
+    }).done(function() {
+        Swal.fire('Success!', 'Post updated successfully!', 'success')
+            .then(function() {
+                window.location = "/";
+            })
+    }).fail(function() {
+        Swal.fire("Ops...", "Error updating post!", "error");
+    }).always(function() {
+        $('#update-post').prop('disabled', false);
+    })
+}
+
+function deletePost(event) {
+    event.preventDefault();
+
+    Swal.fire({
+        title: "Warning!",
+        text: "Are you sure you want to delete this post? This action is irreversible!",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        icon: "warning"
+    }).then(function(confirmation) {
+        if (!confirmation.value) return;
+
+        const elementClicked = $(event.target);
+        const post = elementClicked.closest('div')
+        const postId = post.data('post-id');
+    
+        elementClicked.prop('disabled', true);
+    
+        $.ajax({
+            url: `/posts/${postId}`,
+            method: "DELETE"
+        }).done(function() {
+            post.fadeOut("slow", function() {
+                $(this).remove();
+            });
+        }).fail(function() {
+            Swal.fire("Ops...", "Error deleting post!", "error");
+        });
+    })
 }
