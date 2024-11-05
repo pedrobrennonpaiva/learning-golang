@@ -1,5 +1,5 @@
 {{ define "likes" }}
-<i class="fas fa-heart like-post" style="cursor: pointer;"></i>
+<i class="fas fa-heart {{ if .Liked }} unlike-post text-danger{{ else }} like-post {{ end }}" style="cursor: pointer;"></i>
 <span> {{ .Likes }} </span>
 {{ end }}
 
