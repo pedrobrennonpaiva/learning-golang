@@ -20,7 +20,7 @@ var loginRoutes = []Route{
 	},
 	{
 		Uri:     "/logout",
-		Method:  http.MethodPost,
+		Method:  http.MethodGet,
 		Handler: controllers.Logout,
 		Auth:    true,
 	},
