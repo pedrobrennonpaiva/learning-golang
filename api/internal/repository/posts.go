@@ -60,13 +60,17 @@ func (p Posts) GetPostById(postId uint64) (models.Post, error) {
 
 func (p Posts) GetPosts(user uint64) ([]models.Post, error) {
 	rows, err := p.db.Query(`
-		SELECT distinct p.*, u.nickname, (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likes
+		SELECT distinct 
+            p.*, 
+            u.nickname, 
+            (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likes,
+            EXISTS(SELECT 1 FROM likes WHERE post_id = p.id AND user_id = ?) as liked
 		FROM posts p 
 		INNER JOIN users u ON u.id = p.author_id 
 		INNER JOIN followers f ON f.user_id = p.author_id 
 		WHERE u.id = ? or f.follower_id = ?
 		ORDER BY 1 DESC
-	`, user, user)
+	`, user, user, user)
 	if err != nil {
 		return []models.Post{}, err
 	}
@@ -84,6 +88,7 @@ func (p Posts) GetPosts(user uint64) ([]models.Post, error) {
 			&post.CreatedAt,
 			&post.AuthorNickname,
 			&post.Likes,
+			&post.Liked,
 		); err != nil {
 			return []models.Post{}, err
 		}

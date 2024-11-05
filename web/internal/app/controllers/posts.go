@@ -65,3 +65,27 @@ func LikePost(w http.ResponseWriter, r *http.Request) {
 
 	responses.JSON(w, response.StatusCode, nil)
 }
+
+func UnlikePost(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	postId, err := strconv.ParseUint(params["id"], 10, 64)
+	if err != nil {
+		responses.JSON(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	url := fmt.Sprintf("%s/posts/%d/unlike", config.GetConfig().ApiUrl, postId)
+	response, err := requests.DoRequestWithAuth(r, http.MethodPost, url, nil)
+	if err != nil {
+		responses.JSON(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.TreatError(w, response)
+		return
+	}
+
+	responses.JSON(w, response.StatusCode, nil)
+}
