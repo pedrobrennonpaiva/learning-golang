@@ -3,6 +3,7 @@ $('#follow').on('click', followUser);
 $('#unfollow').on('click', unfollowUser);
 $('#edit-user-form').on('submit', editUser);
 $('#change-password-form').on('submit', changePassword);
+$('#delete-user').on('click', deleteUser);
 
 function register(e) {
     e.preventDefault();
@@ -126,5 +127,31 @@ function changePassword(e) {
     }).fail(function(error) {
         console.log(error);
         Swal.fire('Error!', 'Error updating password', 'error');
+    });
+}
+
+function deleteUser() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/delete-user',
+                method: 'DELETE'
+            }).done(function() {
+                Swal.fire('Success!', 'User deleted successfully', 'success')
+                    .then(function() {
+                        window.location = '/logout';
+                    });
+            }).fail(function(error) {
+                console.log(error);
+                Swal.fire('Error!', 'Error deleting user', 'error');
+            });
+        }
     });
 }
