@@ -15,7 +15,7 @@ function register(e) {
     const confirmPassword = $('#confirmPassword').val();
 
     if (password !== confirmPassword) {
-        alert('As senhas não são iguais');
+        Swal.fire('Ops...', 'The passwords are not the same', 'warning');
         return;
     }
 
@@ -30,6 +30,7 @@ function register(e) {
         }
     }).done(function() {
         Swal.fire('Success!', 'User registered successfully', 'success');
+        window.location = '/login';
     }).fail(function(error) {
         console.log(error);
         Swal.fire('Error!', 'Error registering user', 'error');
