@@ -1,0 +1,43 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golang Webapp - Edit User</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body>
+    {{ template "navbar" }}
+
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-12">
+                <h3>Edit User Data</h3>
+                <form id="edit-user-form">
+                    <div class="form-group">
+                        <label for="name-user">Name</label>
+                        <input type="text" class="form-control" id="name-user" name="name-user" 
+                        placeholder="Enter your name" value="{{ .Name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" 
+                        placeholder="Enter your email" value="{{ .Email }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nickname">Nick</label>
+                        <input type="text" class="form-control" id="nickname" name="nickname" 
+                        placeholder="Enter your nickname" value="{{ .Nickname }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-info">Update Data</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{ template "footer" }}
+    {{ template "scripts" }}
+    
+    <script src="/assets/js/users.js"></script>
+</body>
