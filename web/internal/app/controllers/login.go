@@ -5,14 +5,20 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 	"webapp/internal/config"
-	"webapp/internal/models"
 	"webapp/internal/pkg"
 	"webapp/internal/pkg/cookies"
 	"webapp/internal/pkg/responses"
 )
 
 func LoadLoginPage(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := cookies.Read(r)
+	if cookie.Token != "" && cookie.ExpiresAt > time.Now().Unix() {
+		http.Redirect(w, r, "/", 302)
+		return
+	}
+
 	pkg.ExecuteTemplate(w, "login.html", nil)
 }
 
@@ -45,7 +51,7 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var authResponse models.AuthResponse
+	var authResponse cookies.AuthResponse
 	if err = json.NewDecoder(response.Body).Decode(&authResponse); err != nil {
 		responses.JSON(w, http.StatusUnprocessableEntity, responses.ErrorAPI{Err: err.Error()})
 		return

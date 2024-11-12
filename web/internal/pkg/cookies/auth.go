@@ -1,4 +1,4 @@
-package models
+package cookies
 
 type AuthResponse struct {
 	ID        string `json:"id"`
